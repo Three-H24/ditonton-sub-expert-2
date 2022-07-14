@@ -1,0 +1,117 @@
+{
+  "backdrop_path": "/1WX8kxIIECPNAqbieVurqfpjxoo.jpg",
+  "created_by": [
+    {
+      "id": 2144595,
+      "credit_id": "6250acb68fdda9093470cdcf",
+      "name": "Claudia Souto",
+      "gender": 1,
+      "profile_path": "/16Q1LdocM0oPgBKc7p0YBwZbEMY.jpg"
+    }
+  ],
+  "episode_run_time": [],
+  "first_air_date": "2022-05-30",
+  "genres": [
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 10759,
+      "name": "Action & Adventure"
+    },
+    {
+      "id": 10766,
+      "name": "Soap"
+    }
+  ],
+  "homepage": "https://gshow.globo.com/novelas/cara-e-coragem/",
+  "id": 197189,
+  "in_production": true,
+  "languages": [
+    "pt"
+  ],
+  "last_air_date": "2022-07-11",
+  "last_episode_to_air": {
+    "air_date": "2022-07-11",
+    "episode_number": 37,
+    "id": 3812272,
+    "name": "Episode 37",
+    "overview": "",
+    "production_code": "",
+    "runtime": null,
+    "season_number": 1,
+    "still_path": null,
+    "vote_average": 0,
+    "vote_count": 0
+  },
+  "name": "Cara e Coragem",
+  "next_episode_to_air": {
+    "air_date": "2022-07-12",
+    "episode_number": 38,
+    "id": 3812273,
+    "name": "Episode 38",
+    "overview": "",
+    "production_code": "",
+    "runtime": null,
+    "season_number": 1,
+    "still_path": null,
+    "vote_average": 0,
+    "vote_count": 0
+  },
+  "networks": [
+    {
+      "id": 60,
+      "name": "TV Globo",
+      "logo_path": "/K3CiSckB66dBX4P5fvbC0wT7Nh.png",
+      "origin_country": "BR"
+    }
+  ],
+  "number_of_episodes": 54,
+  "number_of_seasons": 1,
+  "origin_country": [
+    "BR"
+  ],
+  "original_language": "pt",
+  "original_name": "Cara e Coragem",
+  "overview": "",
+  "popularity": 1455.803,
+  "poster_path": "/8CXbCCGiJxi4AXPBQ1QPrehMIGG.jpg",
+  "production_companies": [
+    {
+      "id": 46430,
+      "logo_path": "/aGCY6cOXY488eOpdOnm3ZgBhEly.png",
+      "name": "Estúdios Globo",
+      "origin_country": "BR"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "BR",
+      "name": "Brazil"
+    }
+  ],
+  "seasons": [
+    {
+      "air_date": "2022-05-30",
+      "episode_count": 42,
+      "id": 286922,
+      "name": "Season 1",
+      "overview": "",
+      "poster_path": "/8CXbCCGiJxi4AXPBQ1QPrehMIGG.jpg",
+      "season_number": 1
+    }
+  ],
+  "spoken_languages": [
+    {
+      "english_name": "Portuguese",
+      "iso_639_1": "pt",
+      "name": "Português"
+    }
+  ],
+  "status": "Returning Series",
+  "tagline": "",
+  "type": "Scripted",
+  "vote_average": 6.4,
+  "vote_count": 7
+}
