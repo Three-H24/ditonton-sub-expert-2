@@ -400,7 +400,7 @@ void main() {
       final result = await repository.getWatchlistTv();
       // assert
       final resultList = result.getOrElse(() => []);
-      expect(resultList, [testWatchlistTvSeries]);
+      expect(resultList, [testWatchlistTv]);
     });
   });
 }

@@ -39,7 +39,7 @@ final testTvSeries = Tv(
 );
 
 final testMovieList = [testMovie];
-final testTvSerieList = [testTvSeries];
+final testTvSeriesList = [testTvSeries];
 
 final testMovieDetail = MovieDetail(
   adult: false,
@@ -76,13 +76,15 @@ final testWatchlistMovie = Movie.watchlist(
   posterPath: 'posterPath',
   overview: 'overview',
 );
+final testWatchlistMoviesList = [testWatchlistMovie];
 
-final testWatchlistTvSeries = Tv.watchlist(
+final testWatchlistTv = Tv.watchlist(
   id: 1,
   overview: 'overview',
   posterPath: 'posterPath',
   name: 'name',
 );
+final testWatchlistTvSeries = [testWatchlistTv];
 
 final testMovieTable = MovieTable(
   id: 1,

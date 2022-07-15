@@ -4,8 +4,11 @@ import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/tv_entities/tv.dart';
 import 'package:ditonton/domain/entities/tv_entities/tv_detail.dart';
-import 'package:ditonton/presentation/provider/tv_provider/tv_detail_notifier.dart';
+import 'package:ditonton/presentation/bloc_provider/tv_provider/recommend_tv_series/recommend_tv_series_bloc.dart';
+import 'package:ditonton/presentation/bloc_provider/tv_provider/tv_series_detail/tv_series_detail_bloc.dart';
+import 'package:ditonton/presentation/bloc_provider/tv_provider/watchlist_tv_series/watchlist_tv_series_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -24,36 +27,60 @@ class _DetailTvPageState extends State<DetailTvPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      Provider.of<TvDetailNotifier>(context, listen: false)
-          .fetchTvDetail(widget.id);
-      Provider.of<TvDetailNotifier>(context, listen: false)
-          .loadWatchlistStatusTv(widget.id);
-    });
+    context.read<TvSeriesDetailBloc>().add(FetchTvSeriesDetailEvent(widget.id));
+    context
+        .read<WatchlistTvSeriesBloc>()
+        .add(FetchStatusWatchlistTvSeriesEvent(widget.id));
+    context
+        .read<RecommendTvSeriesBloc>()
+        .add(FetchRecommendTvSeriesEvent(widget.id));
   }
 
   @override
   Widget build(BuildContext context) {
+    RecommendTvSeriesState recommendTvSeriesState =
+        context.watch<RecommendTvSeriesBloc>().state;
+
     return Scaffold(
-      body: Consumer<TvDetailNotifier>(
-        builder: (context, provider, child) {
-          if (provider.tvState == RequestState.Loading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (provider.tvState == RequestState.Loaded) {
-            final tv = provider.tvDetail;
-            return SafeArea(
-              child: DetailContent(
-                tv,
-                provider.listTvRecommendations,
-                provider.isAddedToWatchListTv,
-              ),
-            );
-          } else {
-            return Text(provider.message);
+      body: BlocListener<WatchlistTvSeriesBloc, WatchlistTvSeriesState>(
+        listener: (_, state) {
+          if (state is WatchlistTvSeriesStatusSuccess) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
+            context
+                .read<WatchlistTvSeriesBloc>()
+                .add(FetchStatusWatchlistTvSeriesEvent(widget.id));
           }
         },
+        child: BlocBuilder<TvSeriesDetailBloc, TvSeriesDetailState>(
+          builder: (context, state) {
+            if (state is TvSeriesDetailLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is TvSeriesDetailLoaded) {
+              final tv = state.result;
+              bool isAddedToWatchlistTvSeries = (context
+                      .watch<WatchlistTvSeriesBloc>()
+                      .state is WatchlistTvSeriesStatusLoaded)
+                  ? (context.read<WatchlistTvSeriesBloc>().state
+                          as WatchlistTvSeriesStatusLoaded)
+                      .result
+                  : false;
+              return SafeArea(
+                child: DetailContent(
+                  tv,
+                  recommendTvSeriesState is RecommendTvSeriesLoaded
+                      ? recommendTvSeriesState.result
+                      : List.empty(),
+                  isAddedToWatchlistTvSeries,
+                ),
+              );
+            } else {
+              return Text("Error");
+            }
+          },
+        ),
       ),
     );
   }
@@ -109,35 +136,13 @@ class DetailContent extends StatelessWidget {
                             ElevatedButton(
                               onPressed: () async {
                                 if (!isAddedWatchlist) {
-                                  await Provider.of<TvDetailNotifier>(context,
-                                          listen: false)
-                                      .addWatchlistTv(tv);
+                                  BlocProvider.of<WatchlistTvSeriesBloc>(
+                                      context)
+                                    ..add(AddWatchlistTvSeriesEvent(tv));
                                 } else {
-                                  await Provider.of<TvDetailNotifier>(context,
-                                          listen: false)
-                                      .removeFromWatchlistTv(tv);
-                                }
-
-                                final message = Provider.of<TvDetailNotifier>(
-                                        context,
-                                        listen: false)
-                                    .watchlistTvMessage;
-                                if (message ==
-                                        TvDetailNotifier
-                                            .watchlistAddSuccessMessage ||
-                                    message ==
-                                        TvDetailNotifier
-                                            .watchlistRemoveSuccessMessage) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(message)));
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content: Text(message),
-                                        );
-                                      });
+                                  BlocProvider.of<WatchlistTvSeriesBloc>(
+                                      context)
+                                    ..add(RemoveWatchlistTvSeriesEvent(tv));
                                 }
                               },
                               child: Row(
@@ -183,18 +188,21 @@ class DetailContent extends StatelessWidget {
                               'Recommendations',
                               style: kHeading6,
                             ),
-                            Consumer<TvDetailNotifier>(
-                              builder: (context, data, child) {
-                                if (data.tvRecommendationsState ==
-                                    RequestState.Loading) {
+                            BlocBuilder<RecommendTvSeriesBloc,
+                                RecommendTvSeriesState>(
+                              builder: (context, state) {
+                                if (state is RecommendTvSeriesLoading) {
                                   return Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else if (data.tvRecommendationsState ==
-                                    RequestState.Error) {
-                                  return Text(data.message);
-                                } else if (data.tvRecommendationsState ==
-                                    RequestState.Loaded) {
+                                } else if (state is RecommendTvSeriesError) {
+                                  return Text(state.message);
+                                } else if (state is RecommendTvSeriesLoaded) {
+                                  final recommendations = state.result;
+                                  if (recommendations.isEmpty) {
+                                    return Text(
+                                        'Tidak ada rekomendasi TV Series');
+                                  }
                                   return Container(
                                     height: 150,
                                     child: ListView.builder(

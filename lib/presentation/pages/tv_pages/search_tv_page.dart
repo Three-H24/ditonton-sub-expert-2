@@ -1,8 +1,9 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/tv_provider/tv_search_notifier.dart';
+import 'package:ditonton/presentation/bloc_provider/tv_provider/search_tv_series/search_tv_series_bloc.dart';
 import 'package:ditonton/presentation/widgets/card_list_tv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class SearchTvPage extends StatelessWidget {
@@ -21,8 +22,9 @@ class SearchTvPage extends StatelessWidget {
           children: [
             TextField(
               onSubmitted: (query) {
-                Provider.of<TvSearchNotifier>(context, listen: false)
-                    .fetchTvSearch(query);
+                context
+                    .read<SearchTvSeriesBloc>()
+                    .add(OnSearchTvSeriesEvent(query));
               },
               decoration: InputDecoration(
                 hintText: 'Search title',
@@ -36,19 +38,19 @@ class SearchTvPage extends StatelessWidget {
               'Search Result',
               style: kHeading6,
             ),
-            Consumer<TvSearchNotifier>(
-              builder: (context, data, child) {
-                if (data.state == RequestState.Loading) {
+            BlocBuilder<SearchTvSeriesBloc, SearchTvSeriesState>(
+              builder: (context, state) {
+                if (state is SearchTvSeriesLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (data.state == RequestState.Loaded) {
-                  final result = data.searchResult;
+                } else if (state is SearchTvSeriesLoaded) {
+                  final result = state.result;
                   return Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(8),
                       itemBuilder: (context, index) {
-                        final tv = data.searchResult[index];
+                        final tv = state.result[index];
                         return CardTvList(tv);
                       },
                       itemCount: result.length,
