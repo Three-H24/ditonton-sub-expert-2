@@ -17,8 +17,11 @@ class NowPlayingMoviesBloc
       emit(NowPlayingMoviesLoading());
 
       final result = await getNowPlayingMovies.execute();
-      result.fold((failure) => emit(NowPlayingMoviesError(failure.message)),
-          (success) => emit(NowPlayingMoviesLoaded(success)));
+      result.fold((failure) {
+        emit(NowPlayingMoviesError(failure.message));
+      }, (success) {
+        emit(NowPlayingMoviesLoaded(success));
+      });
     });
   }
 }

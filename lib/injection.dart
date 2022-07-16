@@ -1,3 +1,4 @@
+import 'package:ditonton/security/security_http_ssl_pinning.dart';
 import 'package:ditonton/data/datasources/db/database_helper.dart';
 import 'package:ditonton/data/datasources/db/tv_database_helper.dart';
 import 'package:ditonton/data/datasources/movie/movie_local_data_source.dart';
@@ -42,7 +43,6 @@ import 'package:ditonton/presentation/bloc_provider/tv_provider/top_rated_tv_ser
 import 'package:ditonton/presentation/bloc_provider/tv_provider/tv_on_the_air/tv_on_the_air_bloc.dart';
 import 'package:ditonton/presentation/bloc_provider/tv_provider/tv_series_detail/tv_series_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc_provider/tv_provider/watchlist_tv_series/watchlist_tv_series_bloc.dart';
-import 'package:ditonton/security/security_http_ssl_pinning.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;

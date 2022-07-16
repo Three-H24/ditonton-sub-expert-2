@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
 class SecurityHttpShared {
@@ -14,9 +14,9 @@ class SecurityHttpShared {
     try {
       List<int> bytes = [];
       if (isMode) {
-        bytes = utf8.encode(certificate);
+        bytes = utf8.encode(certificates);
       } else {
-        bytes = (await rootBundle.load('certificates/certificate.cer'))
+        bytes = (await rootBundle.load('certificates/certificates.cer'))
             .buffer
             .asUint8List();
       }
@@ -40,7 +40,8 @@ class SecurityHttpShared {
     return httpClient;
   }
 
-  static Future<http.Client> createSecureHttpClient({bool isMode = false}) async {
+  static Future<http.Client> createSecureHttpClient(
+      {bool isMode = false}) async {
     IOClient client = IOClient(
       await SecurityHttpShared.secureClintHttp(isMode: isMode),
     );
@@ -48,7 +49,7 @@ class SecurityHttpShared {
   }
 }
 
-const certificate = """-----BEGIN CERTIFICATE-----
+const certificates = """-----BEGIN CERTIFICATE-----
 MIIF5zCCBM+gAwIBAgIQAdKnBRs48TrGZbcfFRKNgDANBgkqhkiG9w0BAQsFADBG
 MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRUwEwYDVQQLEwxTZXJ2ZXIg
 Q0EgMUIxDzANBgNVBAMTBkFtYXpvbjAeFw0yMTEwMjEwMDAwMDBaFw0yMjExMTgy

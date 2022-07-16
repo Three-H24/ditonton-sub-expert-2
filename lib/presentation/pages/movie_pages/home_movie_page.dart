@@ -12,7 +12,6 @@ import 'package:ditonton/presentation/pages/movie_pages/top_rated_movies_page.da
 import 'package:ditonton/presentation/pages/movie_pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/pages/tv_pages/home_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_pages/watchlist_tv_page.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,8 +26,8 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
   void initState() {
     super.initState();
     context.read<NowPlayingMoviesBloc>().add(FetchAllNowPlayingMoviesEvent());
-    context.read<PopularMoviesBloc>().add(FetchPopularMoviesEvent());
     context.read<TopRatedMoviesBloc>().add(FetchTopRatedMoviesEvent());
+    context.read<PopularMoviesBloc>().add(FetchPopularMoviesEvent());
   }
 
   @override
@@ -87,7 +86,6 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
         actions: [
           IconButton(
             onPressed: () {
-              // FirebaseCrashlytics.instance.crash();
               Navigator.pushNamed(context, SearchPage.ROUTE_NAME);
             },
             icon: Icon(Icons.search),

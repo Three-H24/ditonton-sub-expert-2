@@ -1,6 +1,8 @@
 # ditonton-submission-2
 
 Repository ini merupakan starter project submission kelas Flutter Expert Dicoding Indonesia.
+Link Codemagic  : 
+Link Repository : https://github.com/Three-H24/ditonton-sub-expert-2-dicoding
 
 ---
 
