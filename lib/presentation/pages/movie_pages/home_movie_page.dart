@@ -19,6 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeMoviePage extends StatefulWidget {
   @override
   _HomeMoviePageState createState() => _HomeMoviePageState();
+  static const ROUTE_NAME = '/home';
 }
 
 class _HomeMoviePageState extends State<HomeMoviePage> {
